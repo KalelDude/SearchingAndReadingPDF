@@ -1,0 +1,96 @@
+﻿@model TabVariable
+
+
+
+
+@if(@Model.pathname.Contains("GV23_MVD"))
+{
+    <h1>Sections in the @TempData["MVDName"] Folder</h1>
+    <div>
+        @foreach (var item in ViewBag.SectionNames)
+        {
+
+            <div class="row justify-content-center gap-10" style="align-self:center; border-radius:4px;">
+                <a class="btn col d-flex align-items-center justify-content-center h-200 w-200 text-white" style="height: 100px; background-color: #006570;"
+          asp-controller="PDF" asp-action="searchPage" asp-route-MvdName="@TempData["MVDName"]" asp-route-folderName="@item" type="submit">@item</a>
+            </div>
+            <br/>
+        }
+
+    </div>
+
+
+}
+else if (@Model.pathname.Contains("Appeal_Pack"))
+{
+    <h1>Property Search in the @TempData["MVDName"] Folder</h1>
+
+    <table id="dataTable" class="display" style="width:100%">
+    <thead>
+        <tr>
+            <th>File Name</th>
+            <th>APP No</th>
+            <th>OBJ No</th>
+            <th></th>
+            
+            
+
+
+        </tr>
+    </thead>
+    <tbody>
+
+
+            @foreach (var item in ViewBag.SectionNames)
+    {
+        // Find the index of "APP-" and "OBJ-"
+        int appIndex = item.IndexOf("APP-");
+        int objIndex = item.IndexOf("OBJ-");
+        // Check if "APP-" is found
+        string appSubstring = null;
+        if (appIndex != -1)
+        {
+            // Find the index of the next space after "APP-"
+            int endIndex = item.IndexOf(" ", appIndex);
+            // Extract substring after "APP-" until the next space
+            appSubstring = endIndex != -1 ? item.Substring(appIndex, endIndex - appIndex) : item.Substring(appIndex);
+        }
+
+        // Check if "OBJ-" is found
+        string objSubstring = null;
+        if (objIndex != -1)
+        {
+            // Find the index of the next space after "OBJ-"
+            int endIndex = item.IndexOf(" ", objIndex);
+            // Extract substring after "OBJ-" until the next space
+            objSubstring = endIndex != -1 ? item.Substring(objIndex, endIndex - objIndex) : item.Substring(objIndex);
+        }
+        <tr>
+                    
+            <td>@item</td>
+            <td>@(appSubstring ?? "N/A")
+            </td>
+            <td>@(objSubstring?? "N/A")</td>
+            <td>
+                <a asp-controller="PDF" asp-action="DownloadBatch" asp-route-batchPath="@TempData["MVDName"]" asp-route-batchFile="@item" class="btn btn-primary">Download Pack File</a>
+            </td>
+
+
+        </tr>
+
+    }
+    </tbody>
+</table>
+}
+
+
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('#dataTable').DataTable();
+        });
+    </script>
+}
+

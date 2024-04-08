@@ -1,0 +1,52 @@
+﻿@model ListAndPaths
+
+
+<h1>@* @Model.foldername *@ Files</h1>
+@{TempData.Keep("folderNameDownloadPage");}
+<table id="dataTable" class="display" style="width:100%">
+    <thead>
+        <tr>
+            <th>Properties</th>
+            <th>Sections</th>
+            <th>View File</th>
+            <th>Download</th>
+           
+           
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.TownNames)
+        {
+
+            <tr>
+           
+                <td>@item</td>
+                <td>@Model.foldername</td>
+
+                <td>
+                  
+                    <a class="btn btn-primary" asp-action="readPDF" asp-route-mvd="@Model.MvdName" asp-route-folder="@Model.foldername" asp-route-file="@item">View file</a>
+                </td>
+     
+                <td>
+                    
+                         <a class="btn btn-primary" asp-action="DownloadDocument" asp-route-mvd="@Model.MvdName" asp-route-folder="@Model.foldername"  asp-route-file="@item">Download File</a>
+                </td>
+
+          
+            </tr>
+
+        }
+    </tbody>
+</table>
+
+@section scripts
+{
+   
+
+    <script>
+        $(document).ready(function () {
+            $('#dataTable').DataTable();
+        });
+    </script>
+}

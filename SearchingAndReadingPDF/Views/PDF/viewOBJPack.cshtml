@@ -1,0 +1,67 @@
+﻿@model List<PackageValuer>
+<h1>Property Search in the @TempData["ObjectionPack"] Folder</h1>
+
+<table id="dataTable" class="display" style="width:100%">
+    <thead>
+        <tr>
+            <th>Property description</th>
+            <th>Object No</th>
+            <th>Valuer Name</th>
+            <th></th>
+
+
+
+
+
+        </tr>
+    </thead>
+    <tbody>
+
+
+        @foreach (var item in Model)
+        {
+
+            <tr>
+
+                <td>@item.PackName</td>
+                <td>@item.ObjectNo</td>
+                <td>@item.ValuerName</td>
+
+                <td>
+                    <a asp-controller="PDF" asp-action="DownloadObjection" asp-route-packPath="@TempData["ObjectionPack"]" asp-route-objectionFile="@item.PackName" class="btn btn-primary">Download Objection File</a>
+                </td>
+
+
+            </tr>
+
+        }
+
+       @*  @foreach (var item in ViewBag.LetterArray)
+        {
+          
+            <tr>
+
+                <td>@item</td>
+              
+                <td>
+                    <a asp-controller="PDF" asp-action="DownloadObjection" asp-route-packPath="@TempData["ObjectionPack"]" asp-route-objectionFile="@item" class="btn btn-primary">Download Objection File</a>
+                </td> 
+
+
+            </tr>
+
+        } *@
+    </tbody>
+</table>
+
+
+
+
+@section scripts
+            {
+    <script>
+        $(document).ready(function () {
+            $('#dataTable').DataTable();
+        });
+    </script>
+}
